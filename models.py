@@ -10,9 +10,7 @@ Base = declarative_base()
 
 
 class Book(Base):
-
     __tablename__ = 'books'
-
     id = Column(Integer, primary_key = True)
     title = Column('Title', String)
     author = Column('Author', String)
@@ -21,8 +19,3 @@ class Book(Base):
 
     def __repr__(self):
         return f'Title: {self.title}, Author: {self.author}, Published: {self.published_date}, Price: {self.price}'
-
-# create DB
-# books.db
-# create model
-# title, author, dat published, price
