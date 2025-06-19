@@ -7,7 +7,6 @@ import time
 # edit books
 # delete books
 # search books
-# loop that runs program
 
 
 def menu():
@@ -110,8 +109,9 @@ def app():
             session.add(new_book)
             session.commit()
         elif choice == '2':
-            # view books
-            pass
+            for book in session.query(Book):
+                print(f'{book.id} | {book.title} | {book.author}')
+            input('\nPress Enter to go back to Main Menu.')
         elif choice == '3':
             # search books
             pass
