@@ -4,44 +4,43 @@ import csv
 import datetime
 import time
 
-# edit books
-# delete books
-
 
 def menu():
     while True:
         print('''
-            \nPROGRAMMING BOOKS
-            \r1) Add book
-            \r2) View all books
-            \r3) Search for book
-            \r4) Book Analysis
-            \r5) Exit
+              \nPROGRAMMING BOOKS
+              \r1) Add book
+              \r2) View all books
+              \r3) Search for book
+              \r4) Book Analysis
+              \r5) Exit
               ''')
         choice = input('What would you like to do?\n> ')
         if choice in ['1', '2', '3', '4', '5']:
             return choice
         else:
-            input('''\nInvalid input. Choose one of the options above.
-                    \rA number from 1-5.
-                    \rPress ENTER to try again.
+            input('''
+                  \nInvalid input. Choose one of the options above.
+                  \rA number from 1-5.
+                  \rPress ENTER to try again.
                   ''')
 
 
 def submenu():
     while True:
         print('''
-            \r1) Edit
-            \r2) Delete
-            \r3) Return to Main Menu 
+              \r1) Edit
+              \r2) Delete
+              \r3) Return to Main Menu 
               ''')
         choice = input('What would you like to do?\n> ')
         if choice in ['1', '2', '3']:
             return choice
         else:
-            input('''\nInvalid input. Choose one of the options above.
-                    \rA number from 1-3.
-                    \rPress ENTER to try again.
+            input('''
+                  \nInvalid input. Choose one of the options above.
+                  \rA number from 1-3.
+                  \rPress ENTER to try again.
                   ''')
 
 
@@ -55,7 +54,7 @@ def clean_date(date_str):
         return_date = datetime.date(year, month, day)
     except ValueError: 
         input('''
-            \n ******DATE ERROR******
+              \n******DATE ERROR******
               \rThe date format should contain a valid Month Day Year.
               \rEx. January 30, 2023
               \rPress Enter to try again.
@@ -72,7 +71,7 @@ def clean_price(price_str):
         return_price = int(price_float * 100)
     except ValueError:
         input('''
-            \n ******PRICE ERROR******
+              \n******PRICE ERROR******
               \rThe price should be a number without currency symbol.
               \rEx. 29.99
               \rPress Enter to try again.
@@ -88,7 +87,7 @@ def clean_id(id_str, id_options):
         book_id = int(id_str)
     except ValueError:
         input('''
-            \n ******ID ERROR******
+              \n ******ID ERROR******
               \rThe price should be a number.
               \rPress Enter to try again.
               \r*********************
@@ -99,11 +98,11 @@ def clean_id(id_str, id_options):
             return book_id
         else:
             input(f'''
-            \n ******ID ERROR******
-            \rOptions: {id_options}
-            \rPress Enter to try again.
-            \r*********************
-            ''')
+                  \n ******ID ERROR******
+                  \rOptions: {id_options}
+                  \rPress Enter to try again.
+                  \r*********************
+                  ''')
             return
 
 
@@ -183,16 +182,17 @@ def app():
             id_error = True
             while id_error:
                 id_choice= input(f'''
-                    \nID Options: {id_options}
-                    \rBook ID: ''')
+                                 \nID Options: {id_options}
+                                 \rBook ID: ''')
                 id_choice = clean_id(id_choice, id_options)
                 if type(id_choice) == int:
                     id_error = False
                 the_book = session.query(Book).filter(Book.id==id_choice).first()
                 print(f'''
-                    \n{the_book.title} by {the_book.author}
-                    \rPublished: {the_book.published_date}
-                    \rPrice: ${the_book.price / 100}''')
+                       \n{the_book.title} by {the_book.author}
+                       \rPublished: {the_book.published_date}
+                       \rPrice: ${the_book.price / 100}
+                       ''')
                 submenu_choice = submenu()
                 if submenu_choice == '1':
                     the_book.title = edit_check('Title', the_book.title)
@@ -213,11 +213,11 @@ def app():
             total_books = session.query(Book).count()
             python_books = session.query(Book).filter(Book.title.like('%Python%')).count()
             print(f'''
-                \n******* BOOK ANALYSIS *******
-                \rOldest Book: {oldest_book}
-                \rNewest Book: {newest_book}
-                \rTotal Books: {total_books}
-                \rNumber of Python Books: {python_books}''')
+                  \n******* BOOK ANALYSIS *******
+                  \rOldest Book: {oldest_book}
+                  \rNewest Book: {newest_book}
+                  \rTotal Books: {total_books}
+                  \rNumber of Python Books: {python_books}''')
             input('\nPress Enter to return to Main Menu.')
         else:
             print('Goodbye...')
