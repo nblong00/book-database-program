@@ -3,6 +3,7 @@ from models import (Base, session,
 import csv
 import datetime
 import time
+import utils
 
 
 def menu():
@@ -44,44 +45,6 @@ def submenu():
                   ''')
 
 
-def clean_date(date_str):
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    split_date = date_str.split(' ')
-    try: 
-        month = months.index(split_date[0]) + 1
-        day = int(split_date[1].split(',')[0])
-        year = int(split_date[2])
-        return_date = datetime.date(year, month, day)
-    except ValueError: 
-        input('''
-              \n******DATE ERROR******
-              \rThe date format should contain a valid Month Day Year.
-              \rEx. January 30, 2023
-              \rPress Enter to try again.
-              \r*********************
-            ''')
-        return
-    else:
-        return return_date
-
-
-def clean_price(price_str):
-    try:
-        price_float = float(price_str)
-        return_price = int(price_float * 100)
-    except ValueError:
-        input('''
-              \n******PRICE ERROR******
-              \rThe price should be a number without currency symbol.
-              \rEx. 29.99
-              \rPress Enter to try again.
-              \r*********************
-            ''')
-        return
-    else:
-        return return_price
-
-
 def clean_id(id_str, id_options):
     try:
         book_id = int(id_str)
@@ -119,11 +82,11 @@ def edit_check(column_name, current_value):
         while True:
             changes = input('What would you like to change the value to: ')
             if column_name == 'Published':
-                changes = clean_date(changes)
+                changes = utils.clean_date(changes)
                 if type(changes) == datetime.date:
                     return changes
             elif column_name == 'Price':
-                changes = clean_price(changes)
+                changes = utils.clean_price(changes)
                 if type(changes) == int:
                     return changes
     else:
@@ -138,8 +101,8 @@ def add_csv():
             if book_in_db == None:
                 title = row[0]
                 author = row[1]
-                date = clean_date(row[2])
-                price = clean_price(row[3])
+                date = utils.clean_date(row[2])
+                price = utils.clean_price(row[3])
                 new_book = Book(title=title, author=author,
                                 published_date=date, price=price)
                 session.add(new_book)
@@ -158,13 +121,13 @@ def app():
             date_error = True
             while date_error:
                 date = input('Published Date (Ex. October 25, 2017): ')
-                date = clean_date(date)
+                date = utils.clean_date(date)
                 if type(date) == datetime.date:
                     date_error = False
             price_error = True
             while price_error:
                 price = input('Price (Ex. 29.99): ')
-                price = clean_price(price)
+                price = utils.clean_price(price)
                 if type(price) == int:
                     price_error = False
             new_book = Book(title=title, author=author,
